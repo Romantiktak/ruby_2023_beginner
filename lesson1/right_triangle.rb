@@ -10,7 +10,11 @@ b = gets.chomp.to_f
 puts 'Введите третью сторону треугольникa'
 c = gets.chomp.to_f
 
-if a**2 + b**2 == c**2
+sides = [a, b, c]
+hipotenuza = sides.max
+sides.delete(hipotenuza)
+
+if sides[0]**2 + sides[1]**2 == hipotenuza**2
   puts 'Треугольник прямоугольный'
 elsif a == b && a == c
   puts 'треугольник равносторонний'
