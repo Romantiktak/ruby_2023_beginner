@@ -22,7 +22,7 @@ class Station
     self.trains.each { |train| train if train.type == type_train }
   end
 
-  def all_trains(type_train)
+  def all_trains
     puts "Список всех поездов #{self.trains}"
   end
 

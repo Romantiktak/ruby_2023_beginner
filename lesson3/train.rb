@@ -4,8 +4,8 @@
 class Train
 
   #TYPES = [:freight, :passenger]
-  attr_accessor :speed
-  attr_accessor :wagons
+  attr_accessor :speed, :wagons, :station
+  attr_reader :type
 
   def initialize(number, type, count)
     @number = number
@@ -42,17 +42,17 @@ class Train
 
   def make_route(route)
     @route = route
-    @station = route.first
+    @station = route.stations.first
   end
 
   def go_ahead
-    num_station = @route.index(@station)
-    @station = route[num_station + 1]
+    num_station = @route.stations.index(@station)
+    self.station = @route.stations[num_station + 1]
   end
 
   def go_back
-    num_station = @route.index(@station)
-    @station = route[num_station - 1]
+    num_station = @route.stations.index(@station)
+    self.station = @route.stations[num_station - 1]
   end
 
 

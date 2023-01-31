@@ -1,6 +1,6 @@
 # Класс маршрута
 
-class Routes
+class Route
 
   attr_accessor :stations
 
