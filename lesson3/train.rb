@@ -1,17 +1,15 @@
 # Подключаю класс маршрута к классу Train
 # Типы поезда :freight :passenger
 
-require "route.rb"
-
 class Train
 
-  TYPES = [:freight, :passenger]
+  #TYPES = [:freight, :passenger]
   attr_accessor :speed
   attr_accessor :wagons
 
-  def initialize(number, index_type, count)
+  def initialize(number, type, count)
     @number = number
-    @type = TYPES[index_type]
+    @type = type
     @wagons = count
     @speed = 0
   end

@@ -1,7 +1,5 @@
 # Описание коасса Станция
 
-require "route.rb"
-
 class Station
 
   attr_accessor :trains
