@@ -5,7 +5,7 @@ class Train
 
   #TYPES = [:freight, :passenger]
   attr_accessor :speed, :wagons, :station
-  attr_reader :type
+  attr_reader :type, :number, :type
 
   def initialize(number, type, count=0)
     @number = number
@@ -43,6 +43,7 @@ class Train
   def make_route(route)
     @route = route
     @station = route.stations.first
+    puts "Поезд стоит на станции маршрута: #{@station}"
   end
 
   def go_ahead

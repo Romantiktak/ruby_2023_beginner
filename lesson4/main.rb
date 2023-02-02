@@ -6,6 +6,12 @@ require_relative 'train'
 
 class Main
 
+  def initialize
+    @stations = []
+    @routes = []
+    @trains = []
+  end
+
   def interface
     loop do
       puts "Выберите число, чтобы воспользоваться командой"
@@ -20,6 +26,7 @@ class Main
       puts "8. Просмотреть список станций"
       puts "9. Просмотреть список поездов на станции"
       puts "10. Управлять станциями на маршруте (добавлять, удалять)"
+      puts "11. Создать станции"
 
       index_answer = gets.chomp.to_i
 
@@ -30,25 +37,29 @@ class Main
 
   def set_command(answer)
     case answer
-    when answer == 1
-      self.create_train
-    when answer == 2
-      # create route
-    when answer == 3
-      # train.route = route
-    when answer == 4
+    when 1
+      create_train
+    when 2
+      create_route
+    when 3
+      set_route_for_train
+    when 4
       # add wagons to train
-    when answer == 5
+    when 5
       # detache wagons
-    when answer == 6
+    when 6
       # train goes ahead
-    when answer == 7
+    when 7
       # train goes back
-    when answer == 8
+    when 8
       # list tyains
-    when answer == 9
+    when 9
       # Choice route
       # add statioun to route
+    when 10
+      #
+    when 11
+      create_stantion
     else
       # nothing
     end
@@ -66,8 +77,49 @@ class Main
     end
     puts "Введите номер поезда"
 
-    train = Train.new(train_number, train_type)
-      puts "Создали поезд #{train}"
+    @trains << Train.new(train_number, train_type)
+      puts "Создали поезд #{@trains.last}"
+  end
+
+  def create_route
+    display_list_stations
+    puts "Выберите начальную станцию маршрута"
+    start = gets.chomp.to_i
+    puts "Выберите конечную станцию маршрута"
+    finish = gets.chomp.to_i
+    @routes << Route.new(@stations[start], @stations[finish])
+    puts "Маршрут создан #{@routes.last}"
+  end
+
+  def create_stantion
+    puts "Введите имя станции одним словом"
+    @stations << gets.chomp.to_sym
+    puts "Станция создана #{@stations.last}"
+  end
+
+  def display_list_trains
+    i = 0
+    @trains.each { |train|  puts "#{i+=1}. № #{train.number}  #{train.type}"}
+  end
+
+  def display_list_routes
+    i = 0
+    @routes.each { |route|  puts "#{i+=1}. #{route}"}
+  end
+
+  def display_list_stations
+    i = 0
+    @stations.each { |station|  puts "#{i+=1}. #{station}"}
+  end
+
+  def set_route_for_train
+    display_list_trains
+    puts "Выберите поезд"
+    index_train = gets.chomp.to_i
+    display_list_routes
+    puts "Выберите маршрут, который назначите для поезда № #{@trains[index_train - 1].number}"
+    index_route = gets.chomp.to_i
+    @trains[index_train].make_route(@routes[index_route - 1])
   end
 end
 
