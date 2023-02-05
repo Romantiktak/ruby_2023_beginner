@@ -35,6 +35,8 @@ class Main
     end
   end
 
+  private
+
   def set_command(answer)
     case answer
     when 1

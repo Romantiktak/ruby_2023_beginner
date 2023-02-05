@@ -34,6 +34,7 @@ class Train
 
   def attach_wagon
     self.wagons += 1 if self.speed.zero?
+    # Подскажите как мне здесь обратиться к методу protected type из класса WagonPassenger
   end
 
   def dettach_wagon
