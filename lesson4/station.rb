@@ -16,8 +16,6 @@ class Station
     self.trains.delete(train)
   end
 
-  private
-  # методы используются только внутри класса
   def list_type_trains(type_train)
     puts "Список поездов на станции по типу #{type_train}"
     self.trains.each { |train| train if train.type == type_train }

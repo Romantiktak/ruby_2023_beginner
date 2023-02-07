@@ -7,10 +7,10 @@ class Train
   attr_accessor :speed, :wagons, :station
   attr_reader :type, :number, :type
 
-  def initialize(number, type, count=0)
+  def initialize(number, type)
     @number = number
     @type = type
-    @wagons = count
+    @wagons = []
     @speed = 0
   end
 
@@ -32,13 +32,13 @@ class Train
     puts "Количество вагонов в поезде: #{self.wagons}"
   end
 
-  def attach_wagon
-    self.wagons += 1 if self.speed.zero?
+  def attach_wagon(wagon)
+    self.wagons << wagon if self.speed.zero? && self.type == wagon.type
     # Подскажите как мне здесь обратиться к методу protected type из класса WagonPassenger
   end
 
-  def dettach_wagon
-    self.wagons -= 1 if self.speed.zero? && self.wagons > 0
+  def dettach_wagon(wagon)
+    self.wagons.delete(wagon) if self.speed.zero?
   end
 
   def make_route(route)
@@ -55,6 +55,10 @@ class Train
   def go_back
     num_station = @route.stations.index(@station)
     self.station = @route.stations[num_station - 1]
+  end
+
+  def current_station
+    self.station
   end
 
 

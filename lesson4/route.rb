@@ -23,7 +23,6 @@ class Route
   end
 
   # метод используется только внутри класса
-  private
 
   def list_station
     puts "Список станций от начальной до конечной: #{self.stations}"
