@@ -1,11 +1,11 @@
 module RailRoad
-  attr_accessor :company
-  def name_manufactured(name)
-    self.company = name  
+
+  def set_manufactured(name)
+    @company = name  
   end
 
-  def name_manufactured
-    self.company  
+  def get_manufactured
+    @company  
   end  
     
 end
