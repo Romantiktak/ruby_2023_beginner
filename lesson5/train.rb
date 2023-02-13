@@ -68,8 +68,7 @@ class Train
   end
 
   def self.find(number_train)
-    @@trains.each { |train| return train if train.number == number_train }
-    return nil
+    @@trains.detect { |train| train.number == number_train }
   end
 
 end
