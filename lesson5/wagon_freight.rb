@@ -1,8 +1,8 @@
 require_relative 'wagon'
-require_relative 'modules'
+require_relative 'manufactured'
 
 class WagonFreight
-  include RailRoad
+  include Manufactured::InstanceMethods
   attr_reader :type
 
   def initialize

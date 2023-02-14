@@ -1,11 +1,18 @@
 # Подключаю класс маршрута к классу Train
 # Типы поезда :freight :passenger
 
-require_relative 'modules'
+require_relative 'manufactured'
+require_relative 'instance_counter'
 
 class Train
+  
+  include Manufactured::InstanceMethods
+  include InstanceCounter
 
-  include RailRoad
+  def self.find(number_train)
+    @@trains.detect { |train| train.number == number_train }
+  end
+
   @@trains = []
   #TYPES = [:freight, :passenger]
   attr_accessor :speed, :wagons, :station
@@ -18,6 +25,7 @@ class Train
     @speed = 0
     @company
     @@trains << self
+    # как мне по правильному сейчас вызвать здесь InstanceCounter::register_instance чтобы увеличить кол-во экземпляров
   end
 
   def increase_speed(speed)
@@ -65,10 +73,6 @@ class Train
 
   def current_station
     self.station
-  end
-
-  def self.find(number_train)
-    @@trains.detect { |train| train.number == number_train }
   end
 
 end

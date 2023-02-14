@@ -2,15 +2,15 @@
 # Типы поезда :freight :passenger
 
 require_relative 'train'
-require_relative 'modules'
+require_relative 'manufactured'
 
-class FreightTrain < Train
+class PassengerTrain < Train
 
   attr_reader :number, :type, :wagons, :speed
 
-  def initialize(number, type = :freight)
-    @type = type
+  def initialize(number, type = :passenger)
     super
+    @type = type
   end
 
   def attach_wagon(wagon)

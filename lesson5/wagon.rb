@@ -1,7 +1,7 @@
-require_relative 'modules'
+require_relative 'manufactured'
 
 class Wagon
-  include RailRoad
+  include Manufactured::InstanceMethods
   #attr_accessor :company
   attr_reader :type
 

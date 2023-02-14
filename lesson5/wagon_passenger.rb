@@ -1,5 +1,5 @@
 require_relative 'wagon'
-require_relative 'modules'
+require_relative 'manufactured'
 
 class WagonPassenger
 
