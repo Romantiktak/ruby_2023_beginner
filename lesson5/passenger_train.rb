@@ -8,6 +8,10 @@ class PassengerTrain < Train
 
   attr_reader :number, :type, :wagons, :speed
 
+  def self.find(number_train)
+    super
+  end
+
   def initialize(number, type = :passenger)
     super
     @type = type

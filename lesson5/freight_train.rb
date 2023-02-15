@@ -7,8 +7,6 @@ require_relative 'manufactured'
 class FreightTrain < Train
 
   attr_reader :number, :type, :wagons, :speed
-
-  include Manufactured::InstanceMethods
   
   def self.find(number_train)
     super
