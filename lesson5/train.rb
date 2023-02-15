@@ -25,6 +25,7 @@ class Train
     @speed = 0
     @company
     @@trains << self
+    register_instance
     # как мне по правильному сейчас вызвать здесь InstanceCounter::register_instance чтобы увеличить кол-во экземпляров
   end
 

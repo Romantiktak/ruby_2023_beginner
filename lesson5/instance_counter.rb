@@ -7,13 +7,19 @@ module InstanceCounter
 
   module ClassMethods
     def instances
-      COUNT_INSTANCE ||= 0
+      @instances ||= 0
+    end
+
+    def add_instance
+      @instances = 1 + instances
     end
   end
   module InstanceMethods
+    
+    private
+    
     def register_instance
-      instances # хочу при первом вызове определить константу COUNT_INSTANCE в ноль
-      self.class.COUNT_INSTANCE += 1 # после чего увеличить на единицу 
+      self.class.add_instance
     end
   end
 

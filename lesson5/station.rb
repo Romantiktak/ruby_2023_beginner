@@ -1,7 +1,8 @@
 # Описание коасса Станция
+require_relative 'instance_counter'
 
 class Station
-
+  include InstanceCounter
   @@stations = []
 
   attr_accessor :trains
@@ -9,6 +10,7 @@ class Station
     @name = name_station
     @trains = []
     @@stations << self
+    register_instance
   end
 
   def arrival(train)
