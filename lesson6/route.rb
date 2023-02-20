@@ -1,16 +1,15 @@
 # Класс маршрута
 
 require_relative 'instance_counter'
-require_relative 'validation'
 
 class Route
 
   include InstanceCounter
-  include Validation
   attr_accessor :stations
 
   def initialize(start_station, end_station)
     @stations = [start_station, end_station]
+    validate!
     register_instance
   end
 
@@ -26,6 +25,19 @@ class Route
 
   def list_station
    self.stations
+  end
+
+  def validate?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private
+
+  def validate!
+    raise 'Минимальное количество станций равно двум' if self.stations.size < 2
   end
 
 end

@@ -3,13 +3,13 @@
 
 require_relative 'manufactured'
 require_relative 'instance_counter'
-require_relative 'validation'
 
 class Train
   
   include Manufactured::InstanceMethods
   include InstanceCounter
-  include Validation
+
+  REG_EXP_NUMBER_TRAIN = /^[a-z|0-9]{3}-*[a-z|0-9]{2}/i
 
   def self.find(number_train)
     @@trains.detect { |train| train.number == number_train }
@@ -22,13 +22,12 @@ class Train
   def initialize(number, type)
     @number = number
     @type = type
+    validate!
     @wagons = []
     @speed = 0
     @company
     @@trains << self
     register_instance
-    validate_name_attr!(number)
-    validate_number_train!(number)
   end
 
   def increase_speed(speed)
@@ -72,6 +71,21 @@ class Train
 
   def current_station
     self.station
+  end
+
+  def validate?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private
+
+  def validate!
+    raise 'номер не может быть пустым' if number.nil? || number.length.zero?
+    raise 'Неверный тип поезда' unless type == :freight || type == :passenger
+    raise 'Неверный формат номера' if number !~ REG_EXP_NUMBER_TRAIN
   end
 
 end

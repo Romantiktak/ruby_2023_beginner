@@ -17,7 +17,7 @@ class FreightTrain < Train
     super
   end
 
-  def attach_wagon(wagon)
+   def attach_wagon(wagon)
     super
   end
 

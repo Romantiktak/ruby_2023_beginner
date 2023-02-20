@@ -8,8 +8,6 @@ require_relative 'freight_train'
 require_relative 'wagon'
 require_relative 'wagon_freight'
 require_relative 'wagon_passenger'
-require_relative 'validation'
-
 
 class Main
 
@@ -91,12 +89,16 @@ class Main
     train_number = gets.chomp
     puts "Введите тип поезда: 1 - грузовой, 2 - пассажирский"
     train_type = gets.chomp.to_i
-    if train_type == 1
-      @trains << FreightTrain.new(train_number)
-    elsif train_type == 2
-      @trains << PassengerTrain.new(train_number)
+    begin
+      if train_type == 1
+        @trains << FreightTrain.new(train_number)
+      elsif train_type == 2
+        @trains << PassengerTrain.new(train_number)
+      end
+      puts "Создали поезд #{@trains.last}"
+    rescue StandardError => e
+      puts "Описание ошибки создания поезда: #{e.message}"
     end
-    puts "Создали поезд #{@trains.last}"
   end
 
   def create_route
@@ -105,8 +107,13 @@ class Main
     start = gets.chomp.to_i
     puts "Выберите конечную станцию маршрута"
     finish = gets.chomp.to_i
-    @routes << Route.new(@stations[start - 1], @stations[finish - 1])
-    puts "Маршрут создан #{@routes.last}"
+    begin
+      @routes << Route.new(@stations[start - 1], @stations[finish - 1])
+      puts "Маршрут создан #{@routes.last}"
+    rescue RuntimeError => e
+      puts "#{e.message}"
+    end
+
   end
 
   def create_stantion

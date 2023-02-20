@@ -1,19 +1,17 @@
 # Описание коасса Станция
 require_relative 'instance_counter'
-require_relative 'validation'
 
 class Station
   include InstanceCounter
-  include Validation
   @@stations = []
 
   attr_accessor :trains
   def initialize(name_station)
     @name = name_station
+    validate!
     @trains = []
     @@stations << self
     register_instance
-    validate_name_attr!(name_station)
   end
 
   def arrival(train)
@@ -34,6 +32,19 @@ class Station
 
   def self.all
     @@stations
+  end
+
+  def validate?
+    validate!
+    true
+  rescue
+    false
+  end
+
+  private
+
+  def validate!
+    raise 'номер не может быть пустым' if @name.nil? || @name.length.zero?
   end
 
 end
