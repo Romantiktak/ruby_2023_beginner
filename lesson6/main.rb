@@ -85,11 +85,12 @@ class Main
   end
 
   def create_train
-    puts "Введите номер поезда"
-    train_number = gets.chomp
-    puts "Введите тип поезда: 1 - грузовой, 2 - пассажирский"
-    train_type = gets.chomp.to_i
+    attempt = 0
     begin
+      puts "Введите номер поезда"
+      train_number = gets.chomp
+      puts "Введите тип поезда: 1 - грузовой, 2 - пассажирский"
+      train_type = gets.chomp.to_i
       if train_type == 1
         @trains << FreightTrain.new(train_number)
       elsif train_type == 2
@@ -97,7 +98,11 @@ class Main
       end
       puts "Создали поезд #{@trains.last}"
     rescue StandardError => e
+      attempt += 1
       puts "Описание ошибки создания поезда: #{e.message}"
+      retry if attempt < 3
+    ensure
+      puts "Вы сделали #{attempt} неудачных попыток"
     end
   end
 
