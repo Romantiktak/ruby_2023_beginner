@@ -76,9 +76,9 @@ class Main
     when 11
       create_stantion
     when 12
-      create_passenger_train
+      create_passenger_wagons
     when 13
-      create_freight_train
+      create_freight_wagons
     when 14
       found_train
     when 15
@@ -136,6 +136,7 @@ class Main
     puts "Выберите станцию"
     num_station = gets.chomp.to_i
     i = 0
+    puts " номер станциии #{num_station - 1}"
     @stations[num_station - 1].each_trains{|train|  puts "#{i+=1}. № #{train.number}  #{train.type}"}
     #i = 0
     #@trains.each { |train|  puts "#{i+=1}. № #{train.number}  #{train.type}"}
@@ -171,7 +172,7 @@ class Main
     @trains[index_train -1].make_route(@routes[index_route - 1])
   end
 
-  def create_passenger_train
+  def create_passenger_wagons
     puts "Введите количество пассажирских вагонов"
     count  = gets.chomp.to_i
     puts "Введите количество мест в вагоне"
@@ -179,7 +180,7 @@ class Main
     count.times { @wagons << WagonPassenger.new(places) }
   end
 
-  def create_freight_train
+  def create_freight_wagons
     puts "Введите количество грузовых вагонов"
     count  = gets.chomp.to_i
     puts "Укажите с каким объемом создадутся вагоны"
