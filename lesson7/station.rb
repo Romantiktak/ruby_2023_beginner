@@ -5,7 +5,7 @@ class Station
   include InstanceCounter
   @@stations = []
 
-  attr_accessor :trains
+  attr_reader :trains
   def initialize(name_station)
     @name = name_station
     validate!
@@ -15,19 +15,19 @@ class Station
   end
 
   def arrival(train)
-    self.trains << train
+    @trains << train
   end
 
   def departude(train)
-    self.trains.delete(train)
+    @trains.delete(train)
   end
 
   def list_type_trains(type_train)
-    self.trains.each { |train| train if train.type == type_train }
+    @trains.each { |train| train if train.type == type_train }
   end
 
   def all_trains
-    self.trains
+    @trains
   end
 
   def self.all
@@ -42,7 +42,7 @@ class Station
   end
 
   def each_trains(&block)
-    self.trains.each { |train| yield(train)}
+    @trains.each { |train| yield(train)}
   end
 
   private

@@ -106,7 +106,7 @@ class Main
       puts "Описание ошибки создания поезда: #{e.message}"
       retry if attempt < 3
     ensure
-      puts "Вы сделали #{attempt} неудачных попыток"
+      puts "Вы сделали #{attempt} неудачных попыток" if attempt >= 3
     end
   end
 
@@ -117,7 +117,7 @@ class Main
     puts "Выберите конечную станцию маршрута"
     finish = gets.chomp.to_i
     begin
-      @routes << Route.new(@stations[start - 1], @stations[finish - 1])
+      @routes << Route.new(@stations[start], @stations[finish])
       puts "Маршрут создан #{@routes.last}"
     rescue RuntimeError => e
       puts "#{e.message}"
@@ -132,32 +132,27 @@ class Main
   end
 
   def display_list_trains
-    display_list_stations
-    puts "Выберите станцию"
-    num_station = gets.chomp.to_i
-    i = 0
-    puts " номер станциии #{num_station - 1}"
-    @stations[num_station - 1].each_trains{|train|  puts "#{i+=1}. № #{train.number}  #{train.type}"}
-    #i = 0
-    #@trains.each { |train|  puts "#{i+=1}. № #{train.number}  #{train.type}"}
+    #display_list_stations
+    #puts "Выберите станцию"
+    #num_station = gets.chomp.to_i
+    #puts " номер станциии #{num_station + 1}"
+    #@stations[num_station].each_with_index{|train, index|  puts "#{index}. № #{train.number}  #{train.type}"}
+    @trains.each_with_index{|train, index|  puts "#{index}. № #{train.number}  #{train.type}"}
   end
 
   def display_list_routes
-    i = 0
-    @routes.each { |route|  puts "#{i+=1}. #{route}"}
+    @routes.each_with_index { |route, index| puts "#{index}. #{route}" }
   end
 
   def display_list_stations
-    i = 0
-    @stations.each { |station|  puts "#{i+=1}. #{station}"}
+    @stations.each_with_index { |station, index|  puts "#{index}. #{station}"}
   end
 
   def display_list_wagons
     display_list_trains
     puts "Выберите поезд"
     num_train = gets.chomp.to_i
-    i = 0
-    @trains[num_train - 1].each_wagons{ |wagon|  puts "#{i+=1}. #{wagon} -- #{wagon.type}"}
+    @trains[num_train].each_wagons{ |wagon|  puts "#{i}. #{wagon} -- #{wagon.type}"}
     #i = 0
     #@wagons.each { |wagon|  puts "#{i+=1}. #{wagon} -- #{wagon.type}"}
   end
@@ -167,9 +162,9 @@ class Main
     puts "Выберите поезд"
     index_train = gets.chomp.to_i
     display_list_routes
-    puts "Выберите маршрут, который назначите для поезда № #{@trains[index_train - 1].number}"
+    puts "Выберите маршрут, который назначите для поезда № #{@trains[index_train].number}"
     index_route = gets.chomp.to_i
-    @trains[index_train -1].make_route(@routes[index_route - 1])
+    @trains[index_train].make_route(@routes[index_route])
   end
 
   def create_passenger_wagons
@@ -195,39 +190,38 @@ class Main
     puts "Выберите вагон"
     display_list_wagons
     num_wagon = gets.chomp.to_i
-    @trains[num_train - 1].attach_wagon(@wagons[num_wagon - 1])
+    @trains[num_train].attach_wagon(@wagons[num_wagon])
   rescue
-    
+
   end
 
   def detache_wagon_of_train
     puts "Выберите поезд"
     display_list_trains
     num_train = gets.chomp.to_i
-    i = 0
-    @trains[num_train - 1].wagons.each { |wagon| puts "#{i+=1}. #{wagon} -- #{wagon.type}" }
+    @trains[num_train].wagons.each { |wagon| puts "#{i}. #{wagon} -- #{wagon.type}" }
     puts "Выберите вагон"
     num_wagon = gets.chomp.to_i
-    wagon_detached = @trains[num_train - 1].wagons[num_wagon - 1]
-    @trains[num_train - 1].dettach_wagon(wagon_detached)
+    wagon_detached = @trains[num_train].wagons[num_wagon]
+    @trains[num_train].dettach_wagon(wagon_detached)
   end
 
   def train_goes_ahead
     puts "Выберите поезд"
     display_list_trains
     num_train = gets.chomp.to_i
-    puts "Станция отправления  #{@trains[num_train - 1].current_station}"
+    puts "Станция отправления  #{@trains[num_train].current_station}"
     @trains[num_train - 1].go_ahead
-    puts "Станция прибытия #{@trains[num_train - 1].current_station}"
+    puts "Станция прибытия #{@trains[num_train].current_station}"
   end
 
   def train_goes_back
     puts "Выберите поезд"
     display_list_trains
     num_train = gets.chomp.to_i
-    puts "Станция отправления  #{@trains[num_train - 1].current_station}"
-    @trains[num_train - 1].go_back
-    puts "Станция прибытия #{@trains[num_train - 1].current_station}"
+    puts "Станция отправления  #{@trains[num_train].current_station}"
+    @trains[num_train].go_back
+    puts "Станция прибытия #{@trains[num_train].current_station}"
   end
 
   def add_station_to_route
@@ -237,7 +231,7 @@ class Main
     puts "Выберите станцию для добавления на маршрут"
     display_list_stations
     station_num = gets.chomp.to_i
-    @routes[route_num - 1].add_station(@stations[station_num - 1])
+    @routes[route_num].add_station(@stations[station_num])
   end
 
   def found_train
