@@ -2,7 +2,7 @@ require_relative 'wagon'
 require_relative 'manufactured'
 
 class WagonPassenger < Wagon
-  attr_reader :limit_places
+  attr_reader :limit_places, :free_places
 
   def initialize( places = 56)
     super

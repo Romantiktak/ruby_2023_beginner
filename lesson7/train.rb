@@ -54,11 +54,6 @@ class Train
     self.wagons.delete(wagon) if self.speed.zero?
   end
 
-  def make_route(route)
-    @route = route
-    @station = route.stations.first
-  end
-
   def go_ahead
     num_station = @route.stations.index(@station)
     self.station = @route.stations[num_station + 1]
@@ -81,7 +76,7 @@ class Train
   end
 
   def each_wagons(&block)
-    @wagons.each { |wagon| block.call(wagon) }
+    @wagons.each_with_index { |wagon, index| block.call(wagon, index) }
   end
 
   private

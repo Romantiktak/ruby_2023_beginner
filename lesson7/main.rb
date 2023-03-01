@@ -40,7 +40,7 @@ class Main
       puts "13. Создать грузовые вагоны"
       puts "14. Найти поезд по номеру"
       puts "15. Вывести список вагонов у поезда"
-      #puts "16. Занять место или объем в вагоне"
+      puts "16. Занять место или объем в вагоне"
 
       index_answer = gets.chomp.to_i
 
@@ -70,7 +70,7 @@ class Main
     when 8
       display_list_stations
     when 9
-      add_station_to_route
+      show_trains_of_station
     when 10
       add_station_to_route
     when 11
@@ -83,6 +83,8 @@ class Main
       found_train
     when 15
       show_wagons_of_train
+    when 16
+      take_place_or_volume
     else
       # nothing
     end
@@ -127,16 +129,12 @@ class Main
 
   def create_stantion
     puts "Введите имя станции одним словом"
-    @stations << gets.chomp.to_sym
+    name_station = gets.chomp
+    @stations << Station.new(name_station)
     puts "Станция создана #{@stations.last}"
   end
 
   def display_list_trains
-    #display_list_stations
-    #puts "Выберите станцию"
-    #num_station = gets.chomp.to_i
-    #puts " номер станциии #{num_station + 1}"
-    #@stations[num_station].each_with_index{|train, index|  puts "#{index}. № #{train.number}  #{train.type}"}
     @trains.each_with_index{|train, index|  puts "#{index}. № #{train.number}  #{train.type}"}
   end
 
@@ -149,12 +147,11 @@ class Main
   end
 
   def display_list_wagons
-    display_list_trains
-    puts "Выберите поезд"
-    num_train = gets.chomp.to_i
-    @trains[num_train].each_wagons{ |wagon|  puts "#{i}. #{wagon} -- #{wagon.type}"}
-    #i = 0
-    #@wagons.each { |wagon|  puts "#{i+=1}. #{wagon} -- #{wagon.type}"}
+    @wagons.each_with_index { |w, i| puts "#{i} --- #{w}" } 
+    #display_list_trains
+    #puts "Выберите поезд"
+    #num_train = gets.chomp.to_i
+    #@trains[num_train].each_wagons{ |wagon, i|  puts "#{i}. #{wagon} -- #{wagon.type}"}
   end
 
   def set_route_for_train
@@ -164,7 +161,7 @@ class Main
     display_list_routes
     puts "Выберите маршрут, который назначите для поезда № #{@trains[index_train].number}"
     index_route = gets.chomp.to_i
-    @trains[index_train].make_route(@routes[index_route])
+    @routes[index_route].stations.first.arrival(@trains[index_train])
   end
 
   def create_passenger_wagons
@@ -172,7 +169,11 @@ class Main
     count  = gets.chomp.to_i
     puts "Введите количество мест в вагоне"
     places  = gets.chomp.to_i
-    count.times { @wagons << WagonPassenger.new(places) }
+    count.times do |i|
+      @wagons << WagonPassenger.new(places) 
+      puts "#{i}й вагон #{@wagons.last}"
+    end
+    
   end
 
   def create_freight_wagons
@@ -180,7 +181,10 @@ class Main
     count  = gets.chomp.to_i
     puts "Укажите с каким объемом создадутся вагоны"
     volume  = gets.chomp.to_i
-    count.times { @wagons << WagonFreight.new(volume) }
+    count.times do |i|
+      @wagons << WagonFreight.new(volume) 
+      puts "#{i}й вагон #{@wagons.last}"
+    end
   end
 
   def add_wagon_to_train
@@ -199,11 +203,10 @@ class Main
     puts "Выберите поезд"
     display_list_trains
     num_train = gets.chomp.to_i
-    @trains[num_train].wagons.each { |wagon| puts "#{i}. #{wagon} -- #{wagon.type}" }
+    @trains[num_train].each_wagons { |wagon,i| puts "#{i}. #{wagon} " }
     puts "Выберите вагон"
     num_wagon = gets.chomp.to_i
-    wagon_detached = @trains[num_train].wagons[num_wagon]
-    @trains[num_train].dettach_wagon(wagon_detached)
+    @trains[num_train].dettach_wagon(@wagons[num_wagon])
   end
 
   def train_goes_ahead
@@ -245,8 +248,33 @@ class Main
     display_list_trains
     puts "выберите поезд"
     num_train = gets.chomp.to_i
+    @trains[num_train].each_wagons { |w, i| puts "#{i}й -- #{w}"}
+  end
 
+  def show_trains_of_station
+    display_list_stations
+    puts "Выберите станцию для просмотра поездов"
+    station_num = gets.chomp.to_i  
+    @stations[station_num].each_trains { |tr, i| puts "#{i}й -- #{tr}"}
+  end
 
+  def take_place_or_volume
+    display_list_trains
+    puts "Выберите поезд"
+    num_train = gets.chomp.to_i
+    @trains[num_train].each_wagons { |w, i| puts "#{i}й -- #{w}"}
+    puts "Выберите вагон"
+    num_wagon = gets.chomp.to_i
+    wagon = @trains[num_train].wagons[num_wagon]
+    if wagon.class.to_s == WagonPassenger.to_s
+      wagon.one_place_is_busy
+      puts "Заняли одно место. Свободных мест осталось #{wagon.free_places}"
+    elsif wagon.class.to_s == WagonFreight.to_s
+      puts "Свободно #{wagon.free_volume} объема. Сколько хотите занять?"
+      vol = gets.chomp.to_i
+      wagon.fill_volume(vol)
+      puts "Занятый объем - #{wagon.busy_volume}, свободный - #{wagon.free_volume}"
+    end
   end
 
 end
