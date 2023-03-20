@@ -1,12 +1,16 @@
 # Описание коасса Станция
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 
+# класс станций
 class Station
   include InstanceCounter
   @@stations = []
 
   attr_reader :trains
-  def initialize(name_station)
+
+  def initialize(name_station = nil)
     @name = name_station
     validate!
     @trains = []
@@ -14,15 +18,15 @@ class Station
     register_instance
   end
 
-  def arrival(train)
+  def arrival(train = nil)
     @trains << train
   end
 
-  def departude(train)
+  def departude(train = nil)
     @trains.delete(train)
   end
 
-  def list_type_trains(type_train)
+  def list_type_trains(type_train = nil)
     @trains.each { |train| train if train.type == type_train }
   end
 
@@ -37,7 +41,7 @@ class Station
   def validate?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
@@ -50,5 +54,4 @@ class Station
   def validate!
     raise 'номер не может быть пустым' if @name.nil? || @name.length.zero?
   end
-
 end

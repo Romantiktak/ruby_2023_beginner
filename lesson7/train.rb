@@ -1,17 +1,18 @@
 # Подключаю класс маршрута к классу Train
 # Типы поезда :freight :passenger
+# frozen_string_literal: true
 
 require_relative 'manufactured'
 require_relative 'instance_counter'
 
+# класс поездов
 class Train
-  
   include Manufactured::InstanceMethods
   include InstanceCounter
 
   REG_EXP_NUMBER_TRAIN = /^[a-z|0-9]{3}-*[a-z|0-9]{2}/i
 
-  def self.find(number_train)
+  def self.find(number_train = nil)
     @@trains.detect { |train| train.number == number_train }
   end
 
@@ -19,7 +20,7 @@ class Train
   attr_accessor :speed, :wagons, :station
   attr_reader :type, :number, :type
 
-  def initialize(number, type)
+  def initialize(number = nil, type = nil)
     @number = number
     @type = type
     validate!
@@ -30,7 +31,7 @@ class Train
     register_instance
   end
 
-  def increase_speed(speed)
+  def increase_speed(speed = 0)
     self.speed += speed
   end
 
@@ -43,19 +44,18 @@ class Train
   end
 
   def count_wagons
-    self.wagons
+    wagons
   end
 
-  def attach_wagon(wagon)
-    self.wagons << wagon if self.speed.zero? && self.type == wagon.type
+  def attach_wagon(wagon = nil)
+    wagons << wagon if self.speed.zero? && type == wagon.type
   end
 
-  def dettach_wagon(wagon)
-    self.wagons.delete(wagon) if self.speed.zero?
-  end
+  def dettach_wagon(wagon = nil)
+    wagons.delete(wagon) if self.speed.zero?
 
   def go_ahead
-    num_station = @route.stations.index(@station)
+    num_station = @route.stations.index(@station = nil)
     self.station = @route.stations[num_station + 1]
   end
 
@@ -65,13 +65,13 @@ class Train
   end
 
   def current_station
-    self.station
+    station
   end
 
   def validate?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
@@ -86,5 +86,4 @@ class Train
     raise 'Неверный тип поезда' unless type == :freight || type == :passenger
     raise 'Неверный формат номера' if number !~ REG_EXP_NUMBER_TRAIN
   end
-
 end

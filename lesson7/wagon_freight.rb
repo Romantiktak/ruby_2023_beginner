@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require_relative 'wagon'
 require_relative 'manufactured'
 
+# класс грузового вагона
 class WagonFreight < Wagon
   attr_reader :free_volume
 
@@ -16,9 +19,6 @@ class WagonFreight < Wagon
   end
 
   def busy_volume
-    @limit_volume - self.free_volume
+    @limit_volume - free_volume
   end
-
-
-
 end
