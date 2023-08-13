@@ -52,6 +52,6 @@ class Station
   private
 
   def validate!
-    raise 'номер не может быть пустым' if @name.nil? || @name.length.zero?
+    raise 'номер не может быть пустым' if @name.nil? || @name.empty?
   end
 end

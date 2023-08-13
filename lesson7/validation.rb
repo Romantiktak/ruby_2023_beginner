@@ -13,7 +13,7 @@ module Validation
 
   # модуль для проверки инстанс переменных
   module InstanceMethods
-    REG_EXP_NUMBER_TRAIN = /^[a-z|0-9]{3}-*[a-z|0-9]{2}/i
+    REG_EXP_NUMBER_TRAIN = /^[a-z|0-9]{3}-*[a-z|0-9]{2}/i.freeze
     def validate_name_attr?(name_or_number = nil)
       validate_name_attr!(name_or_number)
       true

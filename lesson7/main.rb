@@ -98,9 +98,10 @@ class Main
       train_number = gets.chomp
       puts 'Введите тип поезда: 1 - грузовой, 2 - пассажирский'
       train_type = gets.chomp.to_i
-      if train_type == 1
+      case train_type
+      when 1
         @trains << FreightTrain.new(train_number)
-      elsif train_type == 2
+      when 2
         @trains << PassengerTrain.new(train_number)
       end
       puts "Создали поезд #{@trains.last}"
@@ -123,7 +124,7 @@ class Main
       @routes << Route.new(@stations[start], @stations[finish])
       puts "Маршрут создан #{@routes.last}"
     rescue RuntimeError => e
-      puts "#{e.message}"
+      puts e.message.to_s
     end
   end
 
@@ -249,7 +250,7 @@ class Main
     display_list_stations
     puts 'Выберите станцию для просмотра поездов'
     station_num = gets.chomp.to_i
-    @stations[station_num].each_trains { |tr, i| puts "#{i}й -- #{tr}" } unless @stations[station_num].nil?
+    @stations[station_num]&.each_trains { |tr, i| puts "#{i}й -- #{tr}" }
   end
 
   def take_place_or_volume
